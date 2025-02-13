@@ -36,50 +36,55 @@
                         class="icon-plus"></i>Add new</a>
             </div>
             <div class="wg-table table-all-user">
-                <table class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Slug</th>
-                            <th>Products</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($categories as $category)
-                        <tr>
-                            <td>{{$category->id}}</td>
-                            <td class="pname">
-                                <div class="image">
-                                    <img src="{{asset('uploads/categories')}}/{{$category->image}}" alt="" class="image">
-                                </div>
-                                <div class="name">
-                                    <a href="" class="body-title-2">{{$category->name}}</a>
-                                </div>
-                            </td>
-                            <td>{{$category->slug}}</td>
-                            <td><a href="#" target="_blank">2</a></td>
-                            <td>
-                                <div class="list-icon-function">
-                                    <a href="{{route('admin.category.edit',['id'=>$category->id])}}">
-                                        <div class="item edit">
-                                            <i class="icon-edit-3"></i>
-                                        </div>
-                                    </a>
-                                    <form action="{{route('admin.category.delete',['id'=>$category->id])}}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <div class="item text-danger delete">
-                                            <i class="icon-trash-2"></i>
-                                        </div>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    @if(Session::has('status'))
+                        <p class="alert alert-success">{{Session::get('status')}}</p>
+                    @endif
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Slug</th>
+                                <th>Products</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($categories as $category)
+                            <tr>
+                                <td>{{$category->id}}</td>
+                                <td class="pname">
+                                    <div class="image">
+                                        <img src="{{asset('uploads/categories')}}/{{$category->image}}" alt="" class="image">
+                                    </div>
+                                    <div class="name">
+                                        <a href="" class="body-title-2">{{$category->name}}</a>
+                                    </div>
+                                </td>
+                                <td>{{$category->slug}}</td>
+                                <td><a href="#" target="_blank">2</a></td>
+                                <td>
+                                    <div class="list-icon-function">
+                                        <a href="{{route('admin.category.edit',['id'=>$category->id])}}">
+                                            <div class="item edit">
+                                                <i class="icon-edit-3"></i>
+                                            </div>
+                                        </a>
+                                        <form action="{{route('admin.category.delete',['id'=>$category->id])}}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <div class="item text-danger delete">
+                                                <i class="icon-trash-2"></i>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="divider"></div>
             <div class="flex items-center justify-between flex-wrap gap10 wgp-pagination">
