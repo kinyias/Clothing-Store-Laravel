@@ -28,6 +28,7 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
+            'mobile' => 'required',
             'password' => 'required|confirmed',
         ]);
 
@@ -35,6 +36,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'mobile'=>$request->mobile,
         ]);
 
         $token = $user->createToken('authToken')->plainTextToken;
