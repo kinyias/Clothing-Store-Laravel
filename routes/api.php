@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\BrandsController;
 use App\Http\Controllers\Api\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -10,4 +11,5 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 Route::prefix('v1')->group(function () {
     Route::apiResource('categories', CategoryController::class);
+    Route::apiResource('brands', BrandsController::class);
 });
