@@ -142,7 +142,7 @@
                                     </a>
                                 </li>
                                 <li class="menu-item">
-                                    <a href="coupons.html" class="">
+                                    <a href="{{route('admin.coupons')}}" class="">
                                         <div class="icon"><i class="icon-grid"></i></div>
                                         <div class="text">Coupons</div>
                                     </a>
@@ -206,7 +206,7 @@
                             </div>
                             <div class="header-grid">
 
-                                <div class="popup-wrap message type-header">
+                                {{-- <div class="popup-wrap message type-header">
                                     <div class="dropdown">
                                         <button class="btn btn-secondary dropdown-toggle" type="button"
                                             id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
@@ -272,7 +272,7 @@
                                         </ul>
                                     </div>
                                 </div>
-
+ --}}
 
 
 
@@ -285,7 +285,7 @@
                                                     <img src="images/avatar/user-1.png" alt="">
                                                 </span>
                                                 <span class="flex flex-column">
-                                                    <span class="body-title mb-2">Kristin Watson</span>
+                                                    <span class="body-title mb-2">Admin</span>
                                                     <span class="text-tiny">Admin</span>
                                                 </span>
                                             </span>
@@ -300,7 +300,7 @@
                                                     <div class="body-title-2">Account</div>
                                                 </a>
                                             </li>
-                                            <li>
+                                            {{-- <li>
                                                 <a href="#" class="user-item">
                                                     <div class="icon">
                                                         <i class="icon-mail"></i>
@@ -324,7 +324,7 @@
                                                     </div>
                                                     <div class="body-title-2">Support</div>
                                                 </a>
-                                            </li>
+                                            </li> --}}
                                             <li>
                                                 <a href="login.html" class="user-item">
                                                     <div class="icon">
