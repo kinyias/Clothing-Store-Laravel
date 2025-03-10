@@ -28,8 +28,14 @@ return [
     |
     */
 
+    'cloudinary' => [
+        'driver'  => 'cloudinary',
+        'cloud_url' => env('CLOUDINARY_URL'),
+        'api_key' => env('CLOUDINARY_API_KEY'),
+        'api_secret' => env('CLOUDINARY_API_SECRET'),
+        'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+    ],
     'disks' => [
-
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app/private'),
@@ -72,6 +78,7 @@ return [
     | the locations of the links and the values should be their targets.
     |
     */
+
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
