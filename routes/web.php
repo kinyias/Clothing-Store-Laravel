@@ -17,6 +17,9 @@ Route::get('/shop/{product_slug}',[ShopController::class,'product_details'])->na
 
 Route::middleware(['auth'])->group(function(){
     Route::get('/account-dashboard',[UserController::class, 'index'])->name('user.index');
+    Route::get('/account-orders',[UserController::class, 'orders'])->name('user.orders');
+    Route::get('/account-order/{order_id}',[UserController::class, 'order_details'])->name('user.order.details');
+
 });
 
 
@@ -50,5 +53,9 @@ Route::middleware(['auth'], AuthAdmin::class)->group(function(){
     Route::post('/admin/coupon/store', [AdminController::class,'coupon_store'])->name('admin.coupon.store');
     Route::get('/admin/coupon/edit/{id}', [AdminController::class,'coupon_edit'])->name('admin.coupon.edit');
     Route::put('/admin/coupon/update', [AdminController::class,'coupon_update'])->name('admin.coupon.update');
-Route::delete('/admin/coupon/delete/{id}', [AdminController::class,'coupon_delete'])->name('admin.coupon.delete');
+    Route::delete('/admin/coupon/delete/{id}', [AdminController::class,'coupon_delete'])->name('admin.coupon.delete');
+
+    Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
+    Route::get('/admin/orders-details/{order_id}', [AdminController::class, 'order_details'])->name('admin.order.details');
+    Route::put('/admin/orders-details/update-status', [AdminController::class, 'update_order_status'])->name('admin.order.status.update');
 });
