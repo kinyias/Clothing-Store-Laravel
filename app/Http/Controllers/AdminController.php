@@ -35,24 +35,30 @@ class AdminController extends Controller
     }
 
     public function brand_store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required',
-            'slug' => 'required|unique:brands,slug',
-            'image' => 'mimes:png,jpg,jpeg|max:2028'
-        ]);
+{
+    $request->validate([
+        'name' => 'required',
+        'slug' => 'required|unique:brands,slug',
+        'image' => 'mimes:png,jpg,jpeg|max:2028'
+    ]);
 
-        $brand = new Brand();
-        $brand->name  = $request->name;
-        $brand->slug = Str::slug($request->name);
+    $brand = new Brand();
+    $brand->name = $request->name;
+    $brand->slug = Str::slug($request->name);
+    
+    if ($request->hasFile('image')) {
         $image = $request->file('image');
-        $file_extention = $request->file('image')->extension();
-        $file_name = Carbon::now()->timestamp . '.' . $file_extention;
-        $this->GenerateBrandThumnailsImage($image, $file_name);
-        $brand->image =  $file_name;
-        $brand->save();
-        return redirect()->route('admin.brands')->with('status', 'Đã thêm thương hiệu thành công!');
+        $file_name = Carbon::now()->timestamp;
+        
+        $uploadedFile = $image->storeOnCloudinary('clothingstore');
+
+        
+        $brand->image = $uploadedFile->getSecurePath();
     }
+    
+    $brand->save();
+    return redirect()->route('admin.brands')->with('status', 'Đã thêm thương hiệu thành công!');
+}
 
     public function brand_edit($id)
     {
