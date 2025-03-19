@@ -51,7 +51,7 @@
                     <div class="upload-image flex-grow">
                         @if($brand->image)
                         <div class="item" id="imgpreview">
-                            <img src="{{asset('uploads/brands')}}/{{$brand->image}}" class="effect8" alt="">
+                            <img src="{{$brand->image}}" class="effect8" alt="">
                         </div>
                         @endif
                         <div id="upload-file" class="item up-load">

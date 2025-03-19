@@ -56,14 +56,14 @@
                                 <td>{{$category->id}}</td>
                                 <td class="pname">
                                     <div class="image">
-                                        <img src="{{asset('uploads/categories')}}/{{$category->image}}" alt="" class="image">
+                                        <img src="{{$category->image}}" alt="" class="image">
                                     </div>
                                     <div class="name">
                                         <a href="" class="body-title-2">{{$category->name}}</a>
                                     </div>
                                 </td>
                                 <td>{{$category->slug}}</td>
-                                <td><a href="#" target="_blank">2</a></td>
+                                <td><a href="#" target="_blank">{{$category->products_count}}</a></td>
                                 <td>
                                     <div class="list-icon-function">
                                         <a href="{{route('admin.category.edit',['id'=>$category->id])}}">

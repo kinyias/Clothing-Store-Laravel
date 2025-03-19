@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Transaction;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
@@ -48,11 +49,7 @@ class AdminController extends Controller
     
     if ($request->hasFile('image')) {
         $image = $request->file('image');
-        $file_name = Carbon::now()->timestamp;
-        
         $uploadedFile = $image->storeOnCloudinary('clothingstore');
-
-        
         $brand->image = $uploadedFile->getSecurePath();
     }
     
@@ -77,34 +74,25 @@ class AdminController extends Controller
         $brand->name  = $request->name;
         $brand->slug = Str::slug($request->name);
         if ($request->hasFile('image')) {
-            if (File::exists(public_path('uploads/brands') . '/' . $brand->image)) {
-                File::delete(public_path('uploads/brands') . '/' . $brand->image);
+             // Delete the old image if it exists
+             if ($brand->image) {
+                $publicId = pathinfo(parse_url($brand->image, PHP_URL_PATH), PATHINFO_FILENAME);
+                Cloudinary::destroy('clothingstore/' . $publicId); // Delete old image
             }
             $image = $request->file('image');
-            $file_extention = $request->file('image')->extension();
-            $file_name = Carbon::now()->timestamp . '.' . $file_extention;
-            $this->GenerateBrandThumnailsImage($image, $file_name);
-            $brand->image =  $file_name;
+            $uploadedFile = $image->storeOnCloudinary('clothingstore');
+            $brand->image = $uploadedFile->getSecurePath();
         }
         $brand->save();
         return redirect()->route('admin.brands')->with('status', 'Đã cập nhật thương hiệu thành công!');
     }
 
-    public function GenerateBrandThumnailsImage($image, $imageName)
-    {
-        $destinationPath  = public_path('uploads/brands');
-        $img = Image::read($image->path());
-        $img->cover(124, 124, "top");
-        $img->resize(124, 124, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save($destinationPath . '/' . $imageName);
-    }
-
     public function brand_delete($id)
     {
         $brand = Brand::find($id);
-        if (File::exists(public_path('uploads/brands') . '/' . $brand->image)) {
-            File::delete(public_path('uploads/brands') . '/' . $brand->image);
+        if ($brand->image) {
+            $publicId = pathinfo(parse_url($brand->image, PHP_URL_PATH), PATHINFO_FILENAME);
+            Cloudinary::destroy('clothingstore/' . $publicId); // Delete old image
         }
         $brand->delete();
         return redirect()->route('admin.brands')->with('status', 'Đã xoá thành công thương hiệu');
@@ -112,7 +100,7 @@ class AdminController extends Controller
 
     public function categories()
     {
-        $categories = Category::orderBy('id', 'DESC')->paginate(10);
+        $categories = Category::withCount('products')->orderBy('id', 'DESC')->paginate(10);
         return view('admin.categories', compact('categories'));
     }
 
@@ -132,25 +120,25 @@ class AdminController extends Controller
         $category = new Category();
         $category->name  = $request->name;
         $category->slug = Str::slug($request->name);
-        $image = $request->file('image');
-        $file_extention = $request->file('image')->extension();
-        $file_name = Carbon::now()->timestamp . '.' . $file_extention;
-        $this->GenerateCategoryThumnailsImage($image, $file_name);
-        $category->image =  $file_name;
+        if ($request->hasFile('image')) {
+           $image = $request->file('image');
+           $uploadedFile = $image->storeOnCloudinary('clothingstore');
+           $category->image = $uploadedFile->getSecurePath();
+       }
         $category->save();
         return redirect()->route('admin.categories')->with('status', 'Đã thêm danh mục thành công!');
     }
 
 
-    public function GenerateCategoryThumnailsImage($image, $imageName)
-    {
-        $destinationPath  = public_path('uploads/categories');
-        $img = Image::read($image->path());
-        $img->cover(124, 124, "top");
-        $img->resize(124, 124, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save($destinationPath . '/' . $imageName);
-    }
+    // public function GenerateCategoryThumnailsImage($image, $imageName)
+    // {
+    //     $destinationPath  = public_path('uploads/categories');
+    //     $img = Image::read($image->path());
+    //     $img->cover(124, 124, "top");
+    //     $img->resize(124, 124, function ($constraint) {
+    //         $constraint->aspectRatio();
+    //     })->save($destinationPath . '/' . $imageName);
+    // }
 
     public function category_edit($id)
     {
@@ -169,15 +157,15 @@ class AdminController extends Controller
         $category->name  = $request->name;
         $category->slug = Str::slug($request->name);
         if ($request->hasFile('image')) {
-            if (File::exists(public_path('uploads/categories') . '/' . $category->image)) {
-                File::delete(public_path('uploads/categories') . '/' . $category->image);
-            }
-            $image = $request->file('image');
-            $file_extention = $request->file('image')->extension();
-            $file_name = Carbon::now()->timestamp . '.' . $file_extention;
-            $this->GenerateCategoryThumnailsImage($image, $file_name);
-            $category->image =  $file_name;
-        }
+            // Delete the old image if it exists
+            if ($category->image) {
+               $publicId = pathinfo(parse_url($category->image, PHP_URL_PATH), PATHINFO_FILENAME);
+               Cloudinary::destroy('clothingstore/' . $publicId); // Delete old image
+           }
+           $image = $request->file('image');
+           $uploadedFile = $image->storeOnCloudinary('clothingstore');
+           $category->image = $uploadedFile->getSecurePath();
+       }
         $category->save();
         return redirect()->route('admin.categories')->with('status', 'Đã cập nhật danh mục thành công!');
     }
@@ -185,8 +173,9 @@ class AdminController extends Controller
     public function category_delete($id)
     {
         $category = Category::find($id);
-        if (File::exists(public_path('uploads/categories') . '/' . $category->image)) {
-            File::delete(public_path('uploads/categories') . '/' . $category->image);
+        if ($category->image) {
+            $publicId = pathinfo(parse_url($category->image, PHP_URL_PATH), PATHINFO_FILENAME);
+            Cloudinary::destroy('clothingstore/' . $publicId); // Delete old image
         }
         $category->delete();
         return redirect()->route('admin.categories')->with('status', 'Đã xoá danh mục thành công');
