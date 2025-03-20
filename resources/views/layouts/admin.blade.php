@@ -384,7 +384,7 @@
                                         <ul>
                                             <li class="product-item gap14 mb-10">
                                                 <div class="image no-bg">
-                                                    <img src="{{asset('uploads/products/thumbnails')}}/${item.image}" alt="${item.name}">
+                                                     <img src="${item.image}" alt="${item.name}">
                                                 </div>
                                                 <div class="flex items-center justify-between gap20 flex-grow">
                                                     <div class="name">

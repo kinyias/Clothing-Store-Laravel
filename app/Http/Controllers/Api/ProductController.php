@@ -23,9 +23,18 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'slug' => 'required|unique:products,slug',
+            'short_description' => 'nullable|string',
+            'description' => 'nullable|string',
             'regular_price' => 'required|numeric',
+            'sale_price' => 'nullable|numeric',
+            'SKU' => 'nullable|string',
+            'stock_status' => 'nullable|string|in:instock,outofstock',
+            'featured' => 'nullable|boolean',
+            'quantity' => 'nullable|integer',
+            'image' => 'required|string', // URL từ Cloudinary
+            'images' => 'nullable|string', // Chuỗi URL cách nhau bằng dấu phẩy
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'nullable|exists:brands,id',
         ]);
@@ -38,9 +47,9 @@ class ProductController extends Controller
             'regular_price' => $request->regular_price,
             'sale_price' => $request->sale_price,
             'SKU' => $request->SKU,
-            'stock_status' => $request->stock_status,
-            'featured' => $request->featured,
-            'quantity' => $request->quantity,
+            'stock_status' => $request->stock_status ?? 'instock',
+            'featured' => $request->featured ?? 0,
+            'quantity' => $request->quantity ?? 0,
             'image' => $request->image,
             'images' => $request->images,
             'category_id' => $request->category_id,
@@ -64,9 +73,18 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'slug' => 'required|unique:products,slug,' . $product->id,
+            'short_description' => 'nullable|string',
+            'description' => 'nullable|string',
             'regular_price' => 'required|numeric',
+            'sale_price' => 'nullable|numeric',
+            'SKU' => 'nullable|string',
+            'stock_status' => 'nullable|string|in:instock,outofstock',
+            'featured' => 'nullable|boolean',
+            'quantity' => 'nullable|integer',
+            'image' => 'nullable|string', // URL từ Cloudinary
+            'images' => 'nullable|string', // Chuỗi URL cách nhau bằng dấu phẩy
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'nullable|exists:brands,id',
         ]);
@@ -79,11 +97,11 @@ class ProductController extends Controller
             'regular_price' => $request->regular_price,
             'sale_price' => $request->sale_price,
             'SKU' => $request->SKU,
-            'stock_status' => $request->stock_status,
-            'featured' => $request->featured,
-            'quantity' => $request->quantity,
-            'image' => $request->image,
-            'images' => $request->images,
+            'stock_status' => $request->stock_status ?? $product->stock_status,
+            'featured' => $request->featured ?? $product->featured,
+            'quantity' => $request->quantity ?? $product->quantity,
+            'image' => $request->image ?? $product->image,
+            'images' => $request->images ?? $product->images,
             'category_id' => $request->category_id,
             'brand_id' => $request->brand_id,
         ]);

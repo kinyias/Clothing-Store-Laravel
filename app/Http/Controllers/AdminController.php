@@ -46,13 +46,13 @@ class AdminController extends Controller
     $brand = new Brand();
     $brand->name = $request->name;
     $brand->slug = Str::slug($request->name);
-    
+
     if ($request->hasFile('image')) {
         $image = $request->file('image');
         $uploadedFile = $image->storeOnCloudinary('clothingstore');
         $brand->image = $uploadedFile->getSecurePath();
     }
-    
+
     $brand->save();
     return redirect()->route('admin.brands')->with('status', 'Đã thêm thương hiệu thành công!');
 }
@@ -226,53 +226,23 @@ class AdminController extends Controller
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
 
-        $current_timestamp = Carbon::now()->timestamp;
-
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = $current_timestamp . '.' . $image->extension();
-            $this->GenerateProductThumbnailImage($image, $imageName);
-            $product->image = $imageName;
+            $uploadedFile = $image->storeOnCloudinary('clothingstore/products');
+            $product->image = $uploadedFile->getSecurePath();
         }
 
         $gallery_arr = array();
-        $gallery_images = "";
-        $counter = 1;
-
         if ($request->hasFile('images')) {
-            $allowedfileExtion = ['jpg', 'png', 'jpeg'];
             $files = $request->file('images');
             foreach ($files as $file) {
-                $gextension = $file->getClientOriginalExtension();
-                $gcheck = in_array($gextension, $allowedfileExtion);
-                if ($gcheck) {
-                    $gfileName = $current_timestamp . '.' . $counter . '.' . $gextension;
-                    $this->GenerateProductThumbnailImage($file, $gfileName);
-                    array_push($gallery_arr, $gfileName);
-                    $counter = $counter + 1;
-                }
+                $uploadedFile = $file->storeOnCloudinary('clothingstore/products/gallery');
+                array_push($gallery_arr, $uploadedFile->getSecurePath());
             }
-            $gallery_images = implode(',', $gallery_arr);
+            $product->images = implode(',', $gallery_arr);
         }
-        $product->images = $gallery_images;
         $product->save();
         return redirect()->route('admin.products')->with('status', 'Product has been added successfully!');
-    }
-
-    public function GenerateProductThumbnailImage($image, $imageName)
-    {
-        $destinationPathThumbnail  = public_path('uploads/products/thumbnails');
-        $destinationPath  = public_path('uploads/products');
-
-        $img = Image::read($image->path());
-        $img->cover(540, 689, "top");
-        $img->resize(540, 689, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save($destinationPath . '/' . $imageName);
-
-        $img->resize(104, 104, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save($destinationPathThumbnail . '/' . $imageName);
     }
 
     public function product_edit($id)
@@ -315,50 +285,36 @@ class AdminController extends Controller
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
 
-        $current_timestamp = Carbon::now()->timestamp;
-
         if ($request->hasFile('image')) {
-            if (File::exists(public_path('uploads/products') . '/' . $product->image)) {
-                File::delete(public_path('uploads/products') . '/' . $product->image);
-            }
-            if (File::exists(public_path('uploads/products/thumbnails') . '/' . $product->image)) {
-                File::delete(public_path('uploads/products/thumbnails') . '/' . $product->image);
+            // Xóa ảnh cũ trên Cloudinary nếu tồn tại
+            if ($product->image) {
+                $publicId = pathinfo(parse_url($product->image, PHP_URL_PATH), PATHINFO_FILENAME);
+                Cloudinary::destroy('clothingstore/products/' . $publicId);
             }
             $image = $request->file('image');
-            $imageName = $current_timestamp . '.' . $image->extension();
-            $this->GenerateProductThumbnailImage($image, $imageName);
-            $product->image = $imageName;
+            $uploadedFile = $image->storeOnCloudinary('clothingstore/products');
+            $product->image = $uploadedFile->getSecurePath();
         }
 
-        $gallery_arr = array();
-        $gallery_images = "";
-        $counter = 1;
-
+        // $gallery_arr = array();
         if ($request->hasFile('images')) {
-            foreach (explode(',', $product->images) as $ofile) {
-                if (File::exists(public_path('uploads/products') . '/' . $ofile)) {
-                    File::delete(public_path('uploads/products') . '/' . $ofile);
-                }
-                if (File::exists(public_path('uploads/products/thumbnails') . '/' . $ofile)) {
-                    File::delete(public_path('uploads/products/thumbnails') . '/' . $ofile);
+            // Xóa các ảnh gallery cũ trên Cloudinary
+            if ($product->images) {
+                foreach (explode(',', $product->images) as $oldImage) {
+                    $publicId = pathinfo(parse_url($oldImage, PHP_URL_PATH), PATHINFO_FILENAME);
+                    Cloudinary::destroy('clothingstore/products/gallery/' . $publicId);
                 }
             }
 
-            $allowedfileExtion = ['jpg', 'png', 'jpeg'];
+            $gallery_arr = array();
             $files = $request->file('images');
             foreach ($files as $file) {
-                $gextension = $file->getClientOriginalExtension();
-                $gcheck = in_array($gextension, $allowedfileExtion);
-                if ($gcheck) {
-                    $gfileName = $current_timestamp . '.' . $counter . '.' . $gextension;
-                    $this->GenerateProductThumbnailImage($file, $gfileName);
-                    array_push($gallery_arr, $gfileName);
-                    $counter = $counter + 1;
-                }
+                $uploadedFile = $file->storeOnCloudinary('clothingstore/products/gallery');
+                array_push($gallery_arr, $uploadedFile->getSecurePath());
             }
-            $gallery_images = implode(',', $gallery_arr);
-            $product->images = $gallery_images;
+            $product->images = implode(',', $gallery_arr);
         }
+
         $product->save();
         return redirect()->route('admin.products')->with('status', 'Product has been updated successfully!');
     }
@@ -366,22 +322,17 @@ class AdminController extends Controller
     public function delete_product($id)
     {
         $product = Product::find($id);
-        if(File::exists(public_path('uploads/products').'/'.$product->image)){
+        // Xóa ảnh chính trên Cloudinary nếu tồn tại
+        if ($product->image) {
+            $publicId = pathinfo(parse_url($product->image, PHP_URL_PATH), PATHINFO_FILENAME);
+            Cloudinary::destroy('clothingstore/products/' . $publicId);
+        }
 
-            File::delete(public_path('uploads/products').'/'.$product->image);
-        }
-        if(File::exists(public_path('uploads/products/thumbnails').'/'.$product->image))
-        {
-        File::delete(public_path('uploads/products/thumbnails').'/'.$product->image);
-        }
-        foreach (explode(',',$product->images) as $ofile){
-            if(File::exists(public_path('uploads/products').'/'.$ofile))
-            {
-                File::delete(public_path('uploads/products').'/'.$ofile);
-            }
-            if (File::exists(public_path('uploads/products/thumbnails').'/'.$ofile))
-            {
-                File::delete(public_path('uploads/products/thumbnails').'/'.$ofile);
+        // Xóa các ảnh gallery trên Cloudinary nếu tồn tại
+        if ($product->images) {
+            foreach (explode(',', $product->images) as $image) {
+                $publicId = pathinfo(parse_url($image, PHP_URL_PATH), PATHINFO_FILENAME);
+                Cloudinary::destroy('clothingstore/products/gallery/' . $publicId);
             }
         }
         $product->delete();
