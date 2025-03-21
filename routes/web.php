@@ -58,4 +58,36 @@ Route::middleware(['auth'], AuthAdmin::class)->group(function(){
     Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
     Route::get('/admin/orders-details/{order_id}', [AdminController::class, 'order_details'])->name('admin.order.details');
     Route::put('/admin/orders-details/update-status', [AdminController::class, 'update_order_status'])->name('admin.order.status.update');
+
+    // Colors
+    Route::get('colors', [AdminController::class, 'colors'])->name('admin.colors');
+    Route::get('color/add', [AdminController::class, 'colorAdd'])->name('admin.color.add');
+    Route::post('color/store', [AdminController::class, 'colorStore'])->name('admin.color.store');
+    Route::get('color/edit/{id}', [AdminController::class, 'colorEdit'])->name('admin.color.edit');
+    Route::post('color/update/{id}', [AdminController::class, 'colorUpdate'])->name('admin.color.update');
+    Route::delete('color/delete/{id}', [AdminController::class, 'colorDelete'])->name('admin.color.delete');
+
+    // Sizes
+    Route::get('sizes', [AdminController::class, 'sizes'])->name('admin.sizes');
+    Route::get('size/add', [AdminController::class, 'sizeAdd'])->name('admin.size.add');
+    Route::post('size/store', [AdminController::class, 'sizeStore'])->name('admin.size.store');
+    Route::get('size/edit/{id}', [AdminController::class, 'sizeEdit'])->name('admin.size.edit');
+    Route::post('size/update/{id}', [AdminController::class, 'sizeUpdate'])->name('admin.size.update');
+    Route::delete('size/delete/{id}', [AdminController::class, 'sizeDelete'])->name('admin.size.delete');
+
+    // Materials
+    Route::get('materials', [AdminController::class, 'materials'])->name('admin.materials');
+    Route::get('material/add', [AdminController::class, 'materialAdd'])->name('admin.material.add');
+    Route::post('material/store', [AdminController::class, 'materialStore'])->name('admin.material.store');
+    Route::get('material/edit/{id}', [AdminController::class, 'materialEdit'])->name('admin.material.edit');
+    Route::post('material/update/{id}', [AdminController::class, 'materialUpdate'])->name('admin.material.update');
+    Route::delete('material/delete/{id}', [AdminController::class, 'materialDelete'])->name('admin.material.delete');
+
+    // Variants
+    Route::get('variants', [AdminController::class, 'variants'])->name('admin.variants');
+    Route::get('variant/add', [AdminController::class, 'variantAdd'])->name('admin.variants.add');
+    Route::post('variant/store', [AdminController::class, 'variantStore'])->name('admin.variants.store');
+    Route::get('variant/edit/{id}', [AdminController::class, 'variantEdit'])->name('admin.variants.edit');
+    Route::post('variant/update/{id}', [AdminController::class, 'variantUpdate'])->name('admin.variants.update');
+    Route::delete('variant/delete/{id}', [AdminController::class, 'variantDelete'])->name('admin.variants.delete');
 });

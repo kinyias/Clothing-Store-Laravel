@@ -135,6 +135,56 @@
                                         </li>
                                     </ul>
                                 </li>
+
+                                <li class="menu-item has-children">
+                                    <a href="javascript:void(0);" class="menu-item-button">
+                                        <div class="icon"><i class="icon-hexagon"></i></div>
+                                        <div class="text">Biến thể</div>
+                                    </a>
+                                    <ul class="sub-menu">
+                                        <li class="sub-menu-item">
+                                            <a href="{{route('admin.color.add')}}" class="">
+                                                <div class="text">Thêm màu sắc</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a href="{{route('admin.colors')}}" class="">
+                                                <div class="text">Màu sắc</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a href="{{route('admin.size.add')}}" class="">
+                                                <div class="text">Thêm kích thước</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a href="{{route('admin.sizes')}}" class="">
+                                                <div class="text">Kích thước</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a href="{{route('admin.material.add')}}" class="">
+                                                <div class="text">Thêm chất liệu</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a href="{{route('admin.materials')}}" class="">
+                                                <div class="text">Chất liệu</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a href="{{route('admin.variants.add')}}" class="">
+                                                <div class="text">Thêm biến thể</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a href="{{route('admin.variants')}}" class="">
+                                                <div class="text">Biến thể</div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
                                 <li class="menu-item">
                                     <a href="slider.html" class="">
                                         <div class="icon"><i class="icon-image"></i></div>

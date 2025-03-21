@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Color;
 use App\Models\Coupon;
+use App\Models\Material;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\Size;
 use App\Models\Transaction;
+use App\Models\Variant;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -434,4 +438,258 @@ class AdminController extends Controller
         }
         return back()->with('status', 'Thay đổi trạng thái thành công');
     }
+
+
+    // Colors
+    public function colors()
+    {
+        $colors = Color::withCount('variants')->paginate(10);
+        return view('admin.colors', compact('colors'));
+    }
+
+    public function colorAdd()
+    {
+        return view('admin.color-add');
+    }
+
+    public function colorStore(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'code' => 'required|string|max:7', // Ví dụ: #FF0000
+        ]);
+
+        Color::create([
+            'name' => $request->name,
+            'code' => $request->code,
+        ]);
+
+        return redirect()->route('admin.colors')->with('status', 'Color added successfully!');
+    }
+
+    public function colorEdit($id)
+    {
+        $color = Color::findOrFail($id);
+        return view('admin.color-edit', compact('color'));
+    }
+
+    public function colorUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'code' => 'required|string|max:7',
+        ]);
+
+        $color = Color::findOrFail($id);
+        $color->update([
+            'name' => $request->name,
+            'code' => $request->code,
+        ]);
+
+        return redirect()->route('admin.colors')->with('status', 'Color updated successfully!');
+    }
+
+    public function colorDelete($id)
+    {
+        $color = Color::findOrFail($id);
+        $color->delete();
+
+        return redirect()->route('admin.colors')->with('status', 'Color deleted successfully!');
+    }
+
+    // Sizes
+    public function sizes()
+    {
+        $sizes = Size::withCount('variants')->paginate(10);
+        return view('admin.sizes', compact('sizes'));
+    }
+
+    public function sizeAdd()
+    {
+        return view('admin.size-add');
+    }
+
+    public function sizeStore(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'code' => 'required|string|max:10', // Ví dụ: S, M, L
+        ]);
+
+        Size::create([
+            'name' => $request->name,
+            'code' => $request->code,
+        ]);
+
+        return redirect()->route('admin.sizes')->with('status', 'Size added successfully!');
+    }
+
+    public function sizeEdit($id)
+    {
+        $size = Size::findOrFail($id);
+        return view('admin.size-edit', compact('size'));
+    }
+
+    public function sizeUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'code' => 'required|string|max:10',
+        ]);
+
+        $size = Size::findOrFail($id);
+        $size->update([
+            'name' => $request->name,
+            'code' => $request->code,
+        ]);
+
+        return redirect()->route('admin.sizes')->with('status', 'Size updated successfully!');
+    }
+
+    public function sizeDelete($id)
+    {
+        $size = Size::findOrFail($id);
+        $size->delete();
+
+        return redirect()->route('admin.sizes')->with('status', 'Size deleted successfully!');
+    }
+
+    // Materials
+    public function materials()
+    {
+        $materials = Material::withCount('variants')->paginate(10);
+        return view('admin.materials', compact('materials'));
+    }
+
+    public function materialAdd()
+    {
+        return view('admin.material-add');
+    }
+
+    public function materialStore(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'code' => 'required|string|max:50', // Ví dụ: cotton, polyester
+        ]);
+
+        Material::create([
+            'name' => $request->name,
+            'code' => $request->code,
+        ]);
+
+        return redirect()->route('admin.materials')->with('status', 'Material added successfully!');
+    }
+
+    public function materialEdit($id)
+    {
+        $material = Material::findOrFail($id);
+        return view('admin.material-edit', compact('material'));
+    }
+
+    public function materialUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'code' => 'required|string|max:50',
+        ]);
+
+        $material = Material::findOrFail($id);
+        $material->update([
+            'name' => $request->name,
+            'code' => $request->code,
+        ]);
+
+        return redirect()->route('admin.materials')->with('status', 'Material updated successfully!');
+    }
+
+    public function materialDelete($id)
+    {
+        $material = Material::findOrFail($id);
+        $material->delete();
+
+        return redirect()->route('admin.materials')->with('status', 'Material deleted successfully!');
+    }
+
+    // Variants
+    public function variants()
+    {
+        $variants = Variant::with(['product', 'color', 'size', 'material'])->paginate(10);
+        $products = Product::all();
+        $colors = Color::all();
+        $sizes = Size::all();
+        $materials = Material::all();
+        return view('admin.variants', compact('variants', 'products', 'colors', 'sizes', 'materials'));
+    }
+
+    public function variantAdd()
+    {
+        $products = Product::all();
+        $colors = Color::all();
+        $sizes = Size::all();
+        $materials = Material::all();
+        return view('admin.variant-add', compact('products', 'colors', 'sizes', 'materials'));
+    }
+
+    public function variantStore(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'color_id' => 'nullable|exists:colors,id',
+            'size_id' => 'nullable|exists:sizes,id',
+            'material_id' => 'nullable|exists:materials,id',
+            'name' => 'nullable|string|max:255',
+        ]);
+
+        Variant::create([
+            'product_id' => $request->product_id,
+            'color_id' => $request->color_id,
+            'size_id' => $request->size_id,
+            'material_id' => $request->material_id,
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('admin.variants')->with('status', 'Variant added successfully!');
+    }
+
+    public function variantEdit($id)
+    {
+        $variant = Variant::findOrFail($id);
+        $products = Product::all();
+        $colors = Color::all();
+        $sizes = Size::all();
+        $materials = Material::all();
+        return view('admin.variant-edit', compact('variant', 'products', 'colors', 'sizes', 'materials'));
+    }
+
+    public function variantUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'color_id' => 'nullable|exists:colors,id',
+            'size_id' => 'nullable|exists:sizes,id',
+            'material_id' => 'nullable|exists:materials,id',
+            'name' => 'nullable|string|max:255',
+        ]);
+
+        $variant = Variant::findOrFail($id);
+        $variant->update([
+            'product_id' => $request->product_id,
+            'color_id' => $request->color_id,
+            'size_id' => $request->size_id,
+            'material_id' => $request->material_id,
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('admin.variants')->with('status', 'Variant updated successfully!');
+    }
+
+    public function variantDelete($id)
+    {
+        $variant = Variant::findOrFail($id);
+        $variant->delete();
+
+        return redirect()->route('admin.variants')->with('status', 'Variant deleted successfully!');
+    }
+
 }
