@@ -9,7 +9,7 @@ use App\Http\Controllers\Api\SizeController;
 use App\Http\Controllers\Api\MaterialController;
 use App\Http\Controllers\Api\VariantController;
 use App\Http\Controllers\Api\ProductController;
-
+use App\Http\Controllers\Api\SearchProductController;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
@@ -23,4 +23,6 @@ Route::prefix('v1')->group(function () {
     Route::apiResource('materials', MaterialController::class);
     Route::apiResource('variants', VariantController::class);
     Route::apiResource('products', ProductController::class);
+    Route::apiResource('search_product', SearchProductController::class);
+
 });

@@ -187,7 +187,9 @@ class AdminController extends Controller
 
     public function products()
     {
-        $products = Product::orderBy('created_at', 'DESC')->paginate(10);
+        // $products = Product::orderBy('created_at', 'DESC')->paginate(10);
+        // return view('admin.products', compact('products'));
+        $products = Product::with(['category', 'brand', 'variants'])->paginate(10);
         return view('admin.products', compact('products'));
     }
 
@@ -347,6 +349,48 @@ class AdminController extends Controller
         $query = $request->input('query');
         $results = Product::where('name', 'LIKE', "%{$query}%")->get()->take(8);
         return response()->json($results);
+    }
+    public function searchProducts(Request $request)
+    {
+        $query = $request->input('query'); // Tìm kiếm theo tên
+        $categoryId = $request->input('category_id'); // Lọc theo danh mục
+        $colorId = $request->input('color_id'); // Lọc theo màu sắc
+        $sizeId = $request->input('size_id'); // Lọc theo kích thước
+        $materialId = $request->input('material_id'); // Lọc theo chất liệu
+
+        $products = Product::query()
+            ->with(['category', 'brand', 'variants.color', 'variants.size', 'variants.material']); // Load các quan hệ
+
+        // Tìm kiếm theo tên nếu có query
+        if ($query) {
+            $products->where('name', 'LIKE', "%{$query}%");
+        }
+
+        // Lọc theo danh mục nếu có
+        if ($categoryId) {
+            $products->where('category_id', $categoryId);
+        }
+
+        // Lọc theo màu sắc, kích thước, chất liệu thông qua variants
+        if ($colorId || $sizeId || $materialId) {
+            $products->whereHas('variants', function ($q) use ($colorId, $sizeId, $materialId) {
+                if ($colorId) {
+                    $q->where('color_id', $colorId);
+                }
+                if ($sizeId) {
+                    $q->where('size_id', $sizeId);
+                }
+                if ($materialId) {
+                    $q->where('material_id', $materialId);
+                }
+            });
+        }
+
+        // Lấy kết quả phân trang
+        $products = $products->paginate(10);
+
+        // Trả về view với dữ liệu
+        return view('admin.products', compact('products'));
     }
 
     public function coupons(){
