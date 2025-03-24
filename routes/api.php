@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\BrandProductController;
 use App\Http\Controllers\Api\BrandsController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CategoryProductController;
@@ -17,6 +18,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 Route::prefix('v1')->group(function () {
     Route::get('/categories/{categoryId}/products', [CategoryProductController::class, 'getProductsByCategory']);
+    Route::get('/brands/{brandId}/products', [BrandProductController::class, 'getProductsByBrand']);
     Route::apiResource('categories', CategoryController::class);
     Route::apiResource('brands', BrandsController::class);
     Route::apiResource('colors', ColorController::class);
