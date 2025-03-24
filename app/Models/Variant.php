@@ -13,7 +13,7 @@ class Variant extends Model
         return $this->belongsTo(Product::class);
     }
 
-    protected $fillable = ['product_id', 'color_id', 'size_id', 'material_id', 'name'];
+    protected $fillable = ['product_id', 'color_id', 'size_id', 'material_id', 'regular_price', 'sale_price', ];
 
     // Biến thể thuộc về 1 màu
     public function color()

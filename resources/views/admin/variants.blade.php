@@ -52,7 +52,8 @@
                                 <th>Color</th>
                                 <th>Size</th>
                                 <th>Material</th>
-                                <th>Name</th>
+                                <th>Regular Price</th>
+                                <th>Sale Price</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -75,7 +76,8 @@
                                 </td>
                                 <td>{{$variant->size ? $variant->size->name : 'N/A'}}</td>
                                 <td>{{$variant->material ? $variant->material->name : 'N/A'}}</td>
-                                <td>{{$variant->name ?? 'N/A'}}</td>
+                                <td>${{$variant->regular_price ?? 'N/A'}}</td> 
+                                <td>${{$variant->sale_price ?? 'N/A'}}</td>
                                 <td>
                                     <div class="list-icon-function">
                                         <a href="{{route('admin.variants.edit',['id'=>$variant->id])}}">

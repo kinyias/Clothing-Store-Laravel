@@ -682,7 +682,8 @@ class AdminController extends Controller
             'color_id' => 'nullable|exists:colors,id',
             'size_id' => 'nullable|exists:sizes,id',
             'material_id' => 'nullable|exists:materials,id',
-            'name' => 'nullable|string|max:255',
+            'regular_price' => 'required|numeric|min:0',
+            'sale_price' => 'nullable|numeric|min:0',
         ]);
 
         Variant::create([
@@ -690,7 +691,8 @@ class AdminController extends Controller
             'color_id' => $request->color_id,
             'size_id' => $request->size_id,
             'material_id' => $request->material_id,
-            'name' => $request->name,
+            'regular_price' => $request->regular_price,
+            'sale_price' => $request->sale_price,
         ]);
 
         return redirect()->route('admin.variants')->with('status', 'Variant added successfully!');
@@ -713,7 +715,8 @@ class AdminController extends Controller
             'color_id' => 'nullable|exists:colors,id',
             'size_id' => 'nullable|exists:sizes,id',
             'material_id' => 'nullable|exists:materials,id',
-            'name' => 'nullable|string|max:255',
+            'regular_price' => 'required|numeric|min:0',
+            'sale_price' => 'nullable|numeric|min:0',
         ]);
 
         $variant = Variant::findOrFail($id);
@@ -722,7 +725,8 @@ class AdminController extends Controller
             'color_id' => $request->color_id,
             'size_id' => $request->size_id,
             'material_id' => $request->material_id,
-            'name' => $request->name,
+            'regular_price' => $request->regular_price,
+            'sale_price' => $request->sale_price,      
         ]);
 
         return redirect()->route('admin.variants')->with('status', 'Variant updated successfully!');

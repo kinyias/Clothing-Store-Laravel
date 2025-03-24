@@ -71,11 +71,17 @@
                 </fieldset>
                 @error('material_id') <span class="alert alert-danger text-center">{{$message}}</span> @enderror
                 <fieldset class="name">
-                    <div class="body-title">Variant Name</div>
-                    <input class="flex-grow" type="text" placeholder="Variant name" name="name"
-                        tabindex="0" value="{{$variant->name ?? ''}}">
+                    <div class="body-title">Regular Price <span class="tf-color-1">*</span></div>
+                    <input class="flex-grow" type="number" step="0.01" placeholder="Regular price" name="regular_price"
+                        tabindex="0" value="{{$variant->regular_price ?? ''}}" required>
                 </fieldset>
-                @error('name') <span class="alert alert-danger text-center">{{$message}}</span> @enderror
+                @error('regular_price') <span class="alert alert-danger text-center">{{$message}}</span> @enderror
+                <fieldset class="name">
+                    <div class="body-title">Sale Price</div>
+                    <input class="flex-grow" type="number" step="0.01" placeholder="Sale price" name="sale_price"
+                        tabindex="0" value="{{$variant->sale_price ?? ''}}">
+                </fieldset>
+                @error('sale_price') <span class="alert alert-danger text-center">{{$message}}</span> @enderror
                 <div class="bot">
                     <div></div>
                     <button class="tf-button w208" type="submit">Update</button>

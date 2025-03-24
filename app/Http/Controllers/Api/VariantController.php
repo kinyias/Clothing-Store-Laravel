@@ -26,7 +26,8 @@ class VariantController extends Controller
             'color_id' => 'required|exists:colors,id',
             'size_id' => 'required|exists:sizes,id',
             'material_id' => 'required|exists:materials,id',
-            'name' => 'nullable|string',
+            'regular_price' => 'required|numeric|min:0', 
+            'sale_price' => 'nullable|numeric|min:0',
         ]);
 
         $variant = Variant::create($request->all());
@@ -52,7 +53,8 @@ class VariantController extends Controller
             'color_id' => 'required|exists:colors,id',
             'size_id' => 'required|exists:sizes,id',
             'material_id' => 'required|exists:materials,id',
-            'name' => 'nullable|string',
+            'regular_price' => 'required|numeric|min:0',
+            'sale_price' => 'nullable|numeric|min:0',
         ]);
 
         $variant->update($request->all());
