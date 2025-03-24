@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Favorite;
 
 class User extends Authenticatable
 {
@@ -47,4 +48,13 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // Quan hệ với sản phẩm yêu thích
+    public function favorites()
+{
+    // return $this->hasMany(Favorite::class, 'user_id', 'id');
+    return $this->belongsToMany(Product::class, 'favorites', 'user_id', 'product_id')
+            ->withTimestamps();
+}
+
 }

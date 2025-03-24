@@ -39,4 +39,12 @@ class Product extends Model
         'category_id',
         'brand_id'
     ];
+
+    // Quan hệ với user yêu thích sản phẩm này
+    public function favoritedBy()
+    {
+        return $this->belongsToMany(User::class, 'favorites', 'product_id', 'user_id')
+            ->withTimestamps();
+    }
+
 }

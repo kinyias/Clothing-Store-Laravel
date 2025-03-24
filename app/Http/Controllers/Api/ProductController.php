@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\Product;
 use App\Http\Controllers\Controller;
@@ -14,7 +14,18 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return response()->json(Product::with(['category', 'brand', 'variants'])->get(), 200);
+        //return response()->json(Product::with(['category', 'brand', 'variants'])->get(), 200);
+        ////test////
+        $products = Product::with(['category', 'brand', 'variants'])->get();
+        $user = Auth::guard('sanctum')->user();
+
+        $products = $products->map(function ($product) use ($user) {
+            $product->is_favorited = $user ? $user->favorites->contains($product->id) : false;
+            return $product;
+        });
+        ////test////
+
+        return response()->json($products, 200);
     }
 
     /**
@@ -56,6 +67,11 @@ class ProductController extends Controller
             'brand_id' => $request->brand_id,
         ]);
 
+        ////test
+        $user = Auth::guard('sanctum')->user();
+        $product->is_favorited = $user ? $user->favorites->contains($product->id) : false;
+        ////test
+
         return response()->json($product, 201);
     }
 
@@ -64,6 +80,12 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        /////test
+        $user = Auth::guard('sanctum')->user();
+        $product->load(['category', 'brand', 'variants']);
+        $product->is_favorited = $user ? $user->favorites->contains($product->id) : false;
+        /////test
+
         return response()->json($product->load(['category', 'brand', 'variants']), 200);
     }
 
@@ -106,6 +128,11 @@ class ProductController extends Controller
             'brand_id' => $request->brand_id,
         ]);
 
+        ////Test
+        $user = Auth::guard('sanctum')->user();
+        $product->is_favorited = $user ? $user->favorites->contains($product->id) : false;
+        ////Test
+        
         return response()->json($product, 200);
     }
 
