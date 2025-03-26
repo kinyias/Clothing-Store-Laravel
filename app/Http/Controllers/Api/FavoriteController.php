@@ -8,15 +8,23 @@ use Illuminate\Support\Facades\Auth;
 
 class FavoriteController extends Controller
 {
-    // Lấy danh sách sản phẩm yêu thích
     public function index()
     {
         $user = Auth::user();
-        $favorites = Favorite::where('user_id', $user->id)->with('product')->get();
+        $favorites = Favorite::where('user_id', $user->id)
+            ->with(['product' => function ($query) {
+                $query->with(['brand', 'variants']);
+            }])->get();
+
+        // thêm is_favorited vào mỗi sản phẩm (để đồng bộ với API /api/v1/products)
+        $favorites = $favorites->map(function ($favorite) use ($user) {
+            $favorite->product->is_favorited = true; // danh sách yêu thích, nên luôn là true
+            return $favorite;
+        });
+
         return response()->json($favorites, 200);
     }
 
-    // Thêm sản phẩm vào danh sách yêu thích
     public function store(Request $request)
     {
         $request->validate([
@@ -43,7 +51,6 @@ class FavoriteController extends Controller
         return response()->json(['message' => 'Đã thêm vào danh sách yêu thích'], 201);
     }
 
-    // Xóa sản phẩm khỏi danh sách yêu thích
     public function destroy($productId)
     {
         $user = Auth::user();
