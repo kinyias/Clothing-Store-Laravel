@@ -14,8 +14,8 @@
                                     <i class="icon-shopping-bag"></i>
                                 </div>
                                 <div>
-                                    <div class="body-text mb-2">Total Orders</div>
-                                    <h4>3</h4>
+                                    <div class="body-text mb-2">Tổng số đơn hàng</div>
+                                    <h4>Not Available</h4>
                                 </div>
                             </div>
                         </div>
@@ -29,8 +29,8 @@
                                     <i class="icon-dollar-sign"></i>
                                 </div>
                                 <div>
-                                    <div class="body-text mb-2">Total Amount</div>
-                                    <h4>481.34</h4>
+                                    <div class="body-text mb-2">Tổng doanh thu</div>
+                                    <h4>Not Available</h4>
                                 </div>
                             </div>
                         </div>
@@ -44,8 +44,8 @@
                                     <i class="icon-shopping-bag"></i>
                                 </div>
                                 <div>
-                                    <div class="body-text mb-2">Pending Orders</div>
-                                    <h4>3</h4>
+                                    <div class="body-text mb-2">Số đơn hàng đang xử lý</div>
+                                    <h4>Not Available</h4>
                                 </div>
                             </div>
                         </div>
@@ -56,11 +56,11 @@
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap14">
                                 <div class="image ic-bg">
-                                    <i class="icon-dollar-sign"></i>
+                                    <i class="icon-shopping-bag"></i>
                                 </div>
                                 <div>
-                                    <div class="body-text mb-2">Pending Orders Amount</div>
-                                    <h4>481.34</h4>
+                                    <div class="body-text mb-2">Số lượng sản phẩm</div>
+                                    <h4>{{ $ttPro }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -77,15 +77,15 @@
                                     <i class="icon-shopping-bag"></i>
                                 </div>
                                 <div>
-                                    <div class="body-text mb-2">Delivered Orders</div>
-                                    <h4>0</h4>
+                                    <div class="body-text mb-2">Số đơn hàng đã được giao</div>
+                                    <h4>Not Available</h4>
                                 </div>
                             </div>
                         </div>
                     </div>
 
 
-                    <div class="wg-chart-default mb-20">
+                    {{-- <div class="wg-chart-default mb-20">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap14">
                                 <div class="image ic-bg">
@@ -93,11 +93,11 @@
                                 </div>
                                 <div>
                                     <div class="body-text mb-2">Delivered Orders Amount</div>
-                                    <h4>0.00</h4>
+                                    <h4>Not Available</h4>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
 
 
                     <div class="wg-chart-default mb-20">
@@ -107,8 +107,8 @@
                                     <i class="icon-shopping-bag"></i>
                                 </div>
                                 <div>
-                                    <div class="body-text mb-2">Canceled Orders</div>
-                                    <h4>0</h4>
+                                    <div class="body-text mb-2">Số đơn bị hủy</div>
+                                    <h4>Not Available</h4>
                                 </div>
                             </div>
                         </div>
@@ -119,11 +119,11 @@
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap14">
                                 <div class="image ic-bg">
-                                    <i class="icon-dollar-sign"></i>
+                                    <i class="icon-shopping-bag"></i>
                                 </div>
                                 <div>
-                                    <div class="body-text mb-2">Canceled Orders Amount</div>
-                                    <h4>0.00</h4>
+                                    <div class="body-text mb-2">Số lượng danh mục</div>
+                                    <h4>{{$ttCate}}</h4>
                                 </div>
                             </div>
                         </div>

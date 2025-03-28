@@ -25,7 +25,9 @@ class AdminController extends Controller
 {
     public function index()
     {
-        return view('admin.index');
+        $ttPro = Product::count();
+        $ttCate = Category::count();
+        return view('admin.index', compact('ttPro', 'ttCate'));
     }
 
     public function brands()
@@ -726,7 +728,7 @@ class AdminController extends Controller
             'size_id' => $request->size_id,
             'material_id' => $request->material_id,
             'regular_price' => $request->regular_price,
-            'sale_price' => $request->sale_price,      
+            'sale_price' => $request->sale_price,
         ]);
 
         return redirect()->route('admin.variants')->with('status', 'Variant updated successfully!');
@@ -739,5 +741,4 @@ class AdminController extends Controller
 
         return redirect()->route('admin.variants')->with('status', 'Variant deleted successfully!');
     }
-
 }

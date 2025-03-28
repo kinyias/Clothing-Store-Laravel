@@ -51,10 +51,15 @@ class User extends Authenticatable
 
     // Quan hệ với sản phẩm yêu thích
     public function favorites()
-{
+    {
     // return $this->hasMany(Favorite::class, 'user_id', 'id');
     return $this->belongsToMany(Product::class, 'favorites', 'user_id', 'product_id')
             ->withTimestamps();
-}
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'user_id', 'id');
+    }
 
 }

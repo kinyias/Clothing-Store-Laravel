@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\MaterialController;
 use App\Http\Controllers\Api\VariantController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\SearchProductController;
+use App\Http\Controllers\Api\ReviewController;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
@@ -34,6 +35,11 @@ Route::prefix('v1')->group(function () {
         Route::get('/favorites', [FavoriteController::class, 'index']);
         Route::post('/favorites', [FavoriteController::class, 'store']);
         Route::delete('/favorites/{productId}', [FavoriteController::class, 'destroy']);
+
+        Route::get('/products/{productId}/reviews', [ReviewController::class, 'index']);
+        Route::get('/reviews', [ReviewController::class, 'allReviews']);
+        Route::post('/reviews', [ReviewController::class, 'store']);
+        Route::delete('/reviews/{reviewId}', [ReviewController::class, 'destroy']);
     });
 });
 
