@@ -10,6 +10,8 @@ use App\Http\Controllers\Api\ColorController;
 use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\SizeController;
 use App\Http\Controllers\Api\MaterialController;
+use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\OrderItemController;
 use App\Http\Controllers\Api\VariantController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\SearchProductController;
@@ -30,7 +32,11 @@ Route::prefix('v1')->group(function () {
     Route::apiResource('variants', VariantController::class);
     Route::apiResource('products', ProductController::class);
     Route::apiResource('search_product', SearchProductController::class);
-
+    Route::apiResource('orders', OrderController::class);
+    Route::get('users/{userId}/orders', [OrderController::class, 'getByUser']);
+    Route::patch('orders/{id}/status', [OrderController::class, 'updateStatus']);
+    Route::apiResource('order-items', OrderItemController::class);
+Route::get('orders/{orderId}/order-items', [OrderItemController::class, 'getByOrder']);
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/favorites', [FavoriteController::class, 'index']);
         Route::post('/favorites', [FavoriteController::class, 'store']);
