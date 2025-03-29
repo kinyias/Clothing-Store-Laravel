@@ -95,7 +95,7 @@
                         <tr>
                             <td class="pname">
                                 <div class="image">
-                                    <img src="{{asset('uploads/products/thumbnails')}}/{{$item->product->image}}" alt="{{$item->product->name}}" class="image">
+                                    <img src="{{$item->product->image}}" alt="{{$item->product->name}}" class="image">
                                 </div>
                                 <div class="name">
                                     <a href="{{route('shop.product.details', ['product_slug'=>$item->product->slug])}}" target="_blank"
@@ -190,7 +190,7 @@
                             <select name="order_status" id="order_status">
                             <option value="ordered" @selected($order->status == 'ordered')>Đã đặt</option>
                             <option value="delivered" @selected($order->status == 'delivered')>Đã giao</option>
-                            <option value="delivered" @selected($order->status == 'completed')>Đã hoàn thành</option>
+                            <option value="completed" @selected($order->status == 'completed')>Đã hoàn thành</option>
                             <option value="canceled" @selected($order->status == 'canceled')>Đã huỷ</option>
                         </select>
                         </div>

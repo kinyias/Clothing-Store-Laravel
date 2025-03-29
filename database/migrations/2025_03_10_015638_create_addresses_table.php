@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone');
             $table->string('locality');
-            $table->text('addess');
+            $table->text('address');
             $table->string('city');
             $table->string('state');
             $table->string('country');
