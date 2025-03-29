@@ -42,7 +42,6 @@ class ReviewController extends Controller
     {
         $request->validate([
             'product_id' => 'required|exists:products,id',
-            'rating' => 'required|integer|between:1,5',
             'comment' => 'nullable|string|max:500',
         ]);
 
@@ -61,7 +60,6 @@ class ReviewController extends Controller
         $review = Review::create([
             'user_id' => $user->id,
             'product_id' => $productId,
-            'rating' => $request->input('rating'),
             'comment' => $request->input('comment'),
         ]);
 

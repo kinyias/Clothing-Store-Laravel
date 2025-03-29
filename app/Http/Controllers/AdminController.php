@@ -27,7 +27,14 @@ class AdminController extends Controller
     {
         $ttPro = Product::count();
         $ttCate = Category::count();
-        return view('admin.index', compact('ttPro', 'ttCate'));
+        $ttOrder = Order::count();
+        $ttPriceOrders = Order::sum('subtotal');
+        $ttOrdered = Order::where('status', 'ordered')->count();
+        $ttDelivered = Order::where('status', 'delivered')->count();
+        $ttCanceled = Order::where('status', 'canceled')->count();
+        $ttCompleted = Order::where('status', 'completed')->count();
+        $orders = Order::orderBy('created_at', 'desc')->limit(5)->get();
+        return view('admin.index', compact('ttPro', 'ttCate', 'ttOrder', 'ttPriceOrders', 'ttOrdered', 'ttDelivered', 'ttCanceled', 'ttCompleted', 'orders'));
     }
 
     public function brands()
