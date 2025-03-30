@@ -10,6 +10,7 @@ use App\Models\Material;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\Review;
 use App\Models\Size;
 use App\Models\Transaction;
 use App\Models\Variant;
@@ -747,5 +748,18 @@ class AdminController extends Controller
         $variant->delete();
 
         return redirect()->route('admin.variants')->with('status', 'Variant deleted successfully!');
+    }
+
+    public function reviews()
+    {
+        $reviews = Review::with('user', 'product')->latest()->paginate(10);
+        return view('admin.reviews', compact('reviews'));
+    }
+
+    public function reviewDelete($id)
+    {
+        $review = Review::findOrFail($id);
+        $review->delete();
+        return redirect()->route('admin.reviews')->with('status', 'Đánh giá đã được xóa thành công!');
     }
 }

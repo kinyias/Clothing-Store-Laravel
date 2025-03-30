@@ -179,6 +179,13 @@
                                 </li>
 
                                 <li class="menu-item">
+                                    <a href="{{ route('admin.reviews') }}" class="">
+                                        <div class="icon"><i class="icon-paperclip"></i></div>
+                                        <div class="text">Đánh giá </div>
+                                    </a>
+                                </li>
+
+                                <li class="menu-item">
                                     <a href="slider.html" class="">
                                         <div class="icon"><i class="icon-image"></i></div>
                                         <div class="text">Slider</div>

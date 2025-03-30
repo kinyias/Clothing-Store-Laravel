@@ -91,4 +91,7 @@ Route::middleware(['auth'], AuthAdmin::class)->group(function(){
     Route::get('variant/edit/{id}', [AdminController::class, 'variantEdit'])->name('admin.variants.edit');
     Route::post('variant/update/{id}', [AdminController::class, 'variantUpdate'])->name('admin.variants.update');
     Route::delete('variant/delete/{id}', [AdminController::class, 'variantDelete'])->name('admin.variants.delete');
+
+    Route::get('reviews', [AdminController::class, 'reviews'])->name('admin.reviews');
+    Route::delete('reviews/{id}', [AdminController::class, 'reviewDelete'])->name('admin.review_delete');
 });
