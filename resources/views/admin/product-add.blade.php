@@ -154,13 +154,6 @@
 
                     <div class="cols gap22">
                         <fieldset class="name">
-                            <div class="body-title mb-10">SKU <span class="tf-color-1">*</span>
-                            </div>
-                            <input class="mb-10" type="text" placeholder="Enter SKU" name="SKU" tabindex="0"
-                                value="{{old('SKU')}}" aria-required="true" required="">
-                        </fieldset>
-                        @error('SKU') <span class="alert alert-danger text-center">{{$message}} </span> @enderror
-                        <fieldset class="name">
                             <div class="body-title mb-10">Quantity <span class="tf-color-1">*</span>
                             </div>
                             <input class="mb-10" type="text" placeholder="Enter quantity" name="quantity"

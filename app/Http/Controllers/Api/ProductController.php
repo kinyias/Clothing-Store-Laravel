@@ -40,7 +40,6 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'regular_price' => 'required|numeric',
             'sale_price' => 'nullable|numeric',
-            'SKU' => 'nullable|string',
             'stock_status' => 'nullable|string|in:instock,outofstock',
             'featured' => 'nullable|boolean',
             'quantity' => 'nullable|integer',
@@ -57,7 +56,6 @@ class ProductController extends Controller
             'description' => $request->description,
             'regular_price' => $request->regular_price,
             'sale_price' => $request->sale_price,
-            'SKU' => $request->SKU,
             'stock_status' => $request->stock_status ?? 'instock',
             'featured' => $request->featured ?? 0,
             'quantity' => $request->quantity ?? 0,
@@ -101,7 +99,6 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'regular_price' => 'required|numeric',
             'sale_price' => 'nullable|numeric',
-            'SKU' => 'nullable|string',
             'stock_status' => 'nullable|string|in:instock,outofstock',
             'featured' => 'nullable|boolean',
             'quantity' => 'nullable|integer',
@@ -118,7 +115,6 @@ class ProductController extends Controller
             'description' => $request->description,
             'regular_price' => $request->regular_price,
             'sale_price' => $request->sale_price,
-            'SKU' => $request->SKU,
             'stock_status' => $request->stock_status ?? $product->stock_status,
             'featured' => $request->featured ?? $product->featured,
             'quantity' => $request->quantity ?? $product->quantity,
@@ -132,7 +128,7 @@ class ProductController extends Controller
         $user = Auth::guard('sanctum')->user();
         $product->is_favorited = $user ? $user->favorites->contains($product->id) : false;
         ////Test
-        
+
         return response()->json($product, 200);
     }
 

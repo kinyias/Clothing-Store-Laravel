@@ -110,7 +110,7 @@
             <div class="col-lg-10">
                 <div class="wg-box">
                     <div class="flex items-center justify-between gap10 flex-wrap">
-                       
+
                         <div class="row">
                             <div class="col-6">
                                 <h5>Chi tiết đơn hàng</h5>
@@ -178,7 +178,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($orderItems as $item)
-                                    
+
                                 <tr>
                                     <td class="pname">
                                         <div class="image">
@@ -191,7 +191,6 @@
                                     </td>
                                     <td class="text-center">{{$item->price}}</td>
                                     <td class="text-center">{{$item->quantity}}</td>
-                                    <td class="text-center">{{$item->product->SKU}}</td>
                                     <td class="text-center">{{$item->product->category->name}}</td>
                                     <td class="text-center">{{$item->product->brand->name}}</td>
                                     <td class="text-center">{{$item->options}}</td>
@@ -201,13 +200,13 @@
                             </tbody>
                         </table>
                     </div>
-        
+
                     <div class="divider"></div>
                     <div class="flex items-center justify-between flex-wrap gap10 wgp-pagination">
                         {{$orderItems->links('pagination::bootstrap-5')}}
                     </div>
                 </div>
-        
+
                 <div class="wg-box mt-5">
                     <h5>Địa chỉ giao hàng</h5>
                     <div class="my-account__address-item col-md-6">
@@ -223,7 +222,7 @@
                         </div>
                     </div>
                 </div>
-        
+
                 <div class="wg-box mt-5">
                     <h5>Thanh toán</h5>
                     <table class="table table-striped table-bordered table-transaction">
@@ -254,12 +253,12 @@
                                     @endif
                                 </td>
                             </tr>
-                           
+
                         </tbody>
                     </table>
                 </div>
             </div>
-            
+
         </div>
     </section>
 </main>

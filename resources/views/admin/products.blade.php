@@ -88,7 +88,6 @@
                             <th>Name</th>
                             <th>Price</th>
                             <th>SalePrice</th>
-                            <th>SKU</th>
                             <th>Category</th>
                             <th>Brand</th>
                             <th>Featured</th>
@@ -112,7 +111,6 @@
                             </td>
                             <td>${{$product->regular_price}}</td>
                             <td>${{$product->sale_price}}</td>
-                            <td>{{$product->SKU}}</td>
                             <td>{{$product->category->name}}</td>
                             <td>{{$product->brand->name}}</td>
                             <td>{{$product->featured == 0 ? "No":"Yes"}}</td>
@@ -150,7 +148,6 @@
                             </td>
                             <td>${{ $product->regular_price }}</td>
                             <td>${{ $product->sale_price }}</td>
-                            <td>{{ $product->SKU }}</td>
                             <td>{{ $product->category->name }}</td>
                             <td>{{ $product->brand->name }}</td>
                             <td>{{ $product->featured == 0 ? 'No' : 'Yes' }}</td>

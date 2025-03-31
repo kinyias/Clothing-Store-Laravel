@@ -161,10 +161,6 @@
           </div>
           <div class="product-single__meta-info">
             <div class="meta-item">
-              <label>SKU:</label>
-              <span>{{$product->SKU}}</span>
-            </div>
-            <div class="meta-item">
               <label>Categories:</label>
               <span>{{$product->category->name}}</span>
             </div>

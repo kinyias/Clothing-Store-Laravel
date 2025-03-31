@@ -219,7 +219,6 @@ class AdminController extends Controller
             'description' => 'required',
             'regular_price' => 'required',
             'sale_price' => 'required',
-            'SKU' => 'required',
             'stock_status' => 'required',
             'featured' => 'required',
             'quantity' => 'required',
@@ -235,7 +234,6 @@ class AdminController extends Controller
         $product->description = $request->description;
         $product->regular_price = $request->regular_price;
         $product->sale_price = $request->sale_price;
-        $product->SKU = $request->SKU;
         $product->stock_status = $request->stock_status;
         $product->featured = $request->featured;
         $product->quantity = $request->quantity;
@@ -278,7 +276,6 @@ class AdminController extends Controller
             'description' => 'required',
             'regular_price' => 'required',
             'sale_price' => 'required',
-            'SKU' => 'required',
             'stock_status' => 'required',
             'featured' => 'required',
             'quantity' => 'required',
@@ -294,7 +291,6 @@ class AdminController extends Controller
         $product->description = $request->description;
         $product->regular_price = $request->regular_price;
         $product->sale_price = $request->sale_price;
-        $product->SKU = $request->SKU;
         $product->stock_status = $request->stock_status;
         $product->featured = $request->featured;
         $product->quantity = $request->quantity;

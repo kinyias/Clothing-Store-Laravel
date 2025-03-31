@@ -91,7 +91,7 @@
                     </thead>
                     <tbody>
                         @foreach ($orderItems as $item)
-                            
+
                         <tr>
                             <td class="pname">
                                 <div class="image">
@@ -104,7 +104,6 @@
                             </td>
                             <td class="text-center">{{$item->price}}</td>
                             <td class="text-center">{{$item->quantity}}</td>
-                            <td class="text-center">{{$item->product->SKU}}</td>
                             <td class="text-center">{{$item->product->category->name}}</td>
                             <td class="text-center">{{$item->product->brand->name}}</td>
                             <td class="text-center">{{$item->options}}</td>
@@ -173,7 +172,7 @@
                                 <span class="badge bg-warning">Đang chờ</span>
                             @endif
                         </td>
-                    </tr>  
+                    </tr>
                 </tbody>
             </table>
         </div>

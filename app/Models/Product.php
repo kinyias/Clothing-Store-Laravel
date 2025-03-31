@@ -30,7 +30,6 @@ class Product extends Model
         'description',
         'regular_price',
         'sale_price',
-        'SKU',
         'stock_status',
         'featured',
         'quantity',
