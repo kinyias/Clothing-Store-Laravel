@@ -134,7 +134,7 @@
                     <p>{{$order->name}}</p>
                     <p>{{$order->address}}</p>
                     <p>{{$order->locality}}</p>
-                    <p>{{$order->city}}, {{$order->country}}</p>
+                    <p>{{$order->city}}</p>
                     <p>{{$order->landmark}}</p>
                     <p>{{$order->zip}}</p>
                     <br>

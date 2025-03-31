@@ -20,12 +20,11 @@ class Order extends Model
         'address',
         'city',
         'state',
-        'country',
         'landmark',
         'zip',
         'type',
         'status',
-        'is_shipping_different',
+  
         'delivered_date',
         'canceled_date'
     ];

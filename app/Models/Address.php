@@ -16,7 +16,6 @@ class Address extends Model
         'address', // Note: This has a typo (should be 'address')
         'city',
         'state',
-        'country',
         'landmark',
         'zip',
         'type',

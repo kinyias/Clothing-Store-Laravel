@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('address');
             $table->string('city');
             $table->string('state');
-            $table->string('country');
+
             $table->string('landmark')->nullable();
             $table->string('zip');
             $table->string('type')->default('home');

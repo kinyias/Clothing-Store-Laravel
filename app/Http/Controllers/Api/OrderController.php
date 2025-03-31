@@ -52,12 +52,10 @@ class OrderController extends Controller
             'address' => 'required|string',
             'city' => 'required|string|max:255',
             'state' => 'required|string|max:255',
-            'country' => 'required|string|max:255',
             'landmark' => 'nullable|string|max:255',
             'zip' => 'required|string|max:20',
             'type' => 'nullable|string|max:50',
             'status' => 'nullable|in:ordered,delivered,canceled',
-            'is_shipping_different' => 'nullable|boolean',
         ]);
 
         if ($validator->fails()) {
@@ -146,12 +144,11 @@ class OrderController extends Controller
             'address' => 'sometimes|string',
             'city' => 'sometimes|string|max:255',
             'state' => 'sometimes|string|max:255',
-            'country' => 'sometimes|string|max:255',
             'landmark' => 'nullable|string|max:255',
             'zip' => 'sometimes|string|max:20',
             'type' => 'nullable|string|max:50',
             'status' => 'nullable|in:ordered,delivered,canceled',
-            'is_shipping_different' => 'nullable|boolean',
+
         ]);
 
         if ($validator->fails()) {

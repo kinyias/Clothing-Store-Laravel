@@ -24,12 +24,11 @@ return new class extends Migration
             $table->text('address');
             $table->string('city');
             $table->string('state');
-            $table->string('country');
             $table->string('landmark')->nullable();
             $table->string('zip');
             $table->string('type')->default('home');
             $table->enum('status',['ordered','delivered','canceled', 'completed'])->default('ordered');
-            $table->boolean('is_shipping_different')->default(false);
+
             $table->date('delivered_date')->nullable();
             $table->date('canceled_date')->nullable();
             $table->timestamps();
