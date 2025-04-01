@@ -16,8 +16,8 @@ return new class extends Migration
             $table->id();
             $table->string('code')->unique();
             $table->enum('type', ['fixed', 'percent']);
-            $table->decimal('value');
-            $table->decimal('cart_value');
+            $table->decimal('value', 12, 3);
+            $table->decimal('cart_value', 12, 3);
             $table->date('expiry_date')->default(DB::raw("(DATE(CURRENT_TIMESTAMP))"));
             $table->timestamps();
         });

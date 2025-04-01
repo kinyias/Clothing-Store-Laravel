@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('color');
             $table->string('material');
             $table->string('size');
-            $table->decimal('price');
+            $table->decimal('price', 12, 3);
             $table->integer('quantity');
             $table->longText('options')->nullable();
             $table->boolean('rstatus')->default(false);
