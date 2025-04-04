@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id')->unsigned();
-            $table->decimal('subtotal');
-            $table->decimal('discount')->default(0);
+            $table->decimal('subtotal',12,3);
+            $table->decimal('discount',12,3)->default(0);
             $table->decimal('tax');
-            $table->decimal('total');
+            $table->decimal('total',12,3);
             $table->string('name');
             $table->string('phone');
             $table->string('locality');
@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('landmark')->nullable();
             $table->string('zip');
             $table->string('type')->default('home');
-            $table->enum('status',['ordered','delivered','canceled', 'completed'])->default('ordered');
+            $table->enum('status',['ordered','waiting', 'pickup', 'delivered','canceled', 'completed'])->default('ordered');
 
             $table->date('delivered_date')->nullable();
             $table->date('canceled_date')->nullable();
