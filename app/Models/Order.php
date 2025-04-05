@@ -24,7 +24,7 @@ class Order extends Model
         'zip',
         'type',
         'status',
-  
+
         'delivered_date',
         'canceled_date'
     ];
@@ -38,5 +38,10 @@ class Order extends Model
 
     public function transaction(){
         return $this->hasOne(Transaction::class);
+    }
+
+    public function shipping()
+    {
+        return $this->hasOne(Shipping::class);
     }
 }

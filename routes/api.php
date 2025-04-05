@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\SearchProductController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\TransactionController;
+use App\Http\Controllers\Api\ShippingController;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
@@ -47,12 +48,17 @@ Route::get('orders/{orderId}/order-items', [OrderItemController::class, 'getByOr
 
         Route::post('addresses/{address}/set-default', [AddressController::class, 'setDefault'])
             ->name('addresses.set-default');
-            Route::apiResource('transactions', TransactionController::class);
-Route::get('orders/{orderId}/transactions', [TransactionController::class, 'getByOrder']);
+        Route::apiResource('transactions', TransactionController::class);
+        Route::get('orders/{orderId}/transactions', [TransactionController::class, 'getByOrder']);
         Route::get('/products/{productId}/reviews', [ReviewController::class, 'index']);
         Route::get('/reviews', [ReviewController::class, 'allReviews']);
         Route::post('/reviews', [ReviewController::class, 'store']);
         Route::delete('/reviews/{reviewId}', [ReviewController::class, 'destroy']);
+
+        Route::get('/shipping/orders-to-pack', [ShippingController::class, 'getOrdersToPack']);
+        Route::get('/shipping/other-orders', [ShippingController::class, 'getOtherOrders']);
+        Route::get('/shipping/orders/{orderId}', [ShippingController::class, 'show']);
+        Route::post('/shipping/orders/{orderId}/confirm', [ShippingController::class, 'confirmPacking']);
     });
 });
 
