@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\SearchProductController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\ShippingController;
+use App\Http\Controllers\Api\DeliveryController;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
@@ -35,11 +36,14 @@ Route::prefix('v1')->group(function () {
     Route::apiResource('variants', VariantController::class);
     Route::apiResource('products', ProductController::class);
     Route::apiResource('search_product', SearchProductController::class);
+    Route::put('/deliveries/order/{orderId}', [DeliveryController::class, 'updateByOrderId']);
+    Route::apiResource('deliveries', DeliveryController::class);
+    Route::get('/orders/status', [OrderController::class, 'getByStatus']);
     Route::apiResource('orders', OrderController::class);
     Route::get('users/{userId}/orders', [OrderController::class, 'getByUser']);
-    Route::patch('orders/{id}/status', [OrderController::class, 'updateStatus']);
+    Route::put('orders/{id}/status', [OrderController::class, 'updateStatus']);
     Route::apiResource('order-items', OrderItemController::class);
-Route::get('orders/{orderId}/order-items', [OrderItemController::class, 'getByOrder']);
+    Route::get('orders/{orderId}/order-items', [OrderItemController::class, 'getByOrder']);
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/favorites', [FavoriteController::class, 'index']);
         Route::post('/favorites', [FavoriteController::class, 'store']);

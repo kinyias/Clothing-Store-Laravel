@@ -251,7 +251,7 @@ class OrderController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'status' => 'required|in:ordered,delivered,canceled'
+            'status' => 'required|in:ordered,waiting,pickup,delivered,canceled'
         ]);
 
         if ($validator->fails()) {
@@ -296,4 +296,35 @@ class OrderController extends Controller
             ], 500);
         }
     }
+    public function getByStatus(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'status' => 'required|in:ordered,waiting,pickup,delivered,canceled,completed'
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Validation errors',
+            'errors' => $validator->errors()
+        ], 422);
+    }
+
+    try {
+        $orders = Order::where('status', $request->status)
+                      ->get();
+        
+        return response()->json([
+            'success' => true,
+            'message' => "Orders with status '{$request->status}' retrieved successfully",
+            'data' => $orders
+        ], 200);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to retrieve orders by status',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
 }
