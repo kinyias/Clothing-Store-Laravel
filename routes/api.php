@@ -38,6 +38,7 @@ Route::prefix('v1')->group(function () {
     Route::apiResource('search_product', SearchProductController::class);
     Route::put('/deliveries/order/{orderId}', [DeliveryController::class, 'updateByOrderId']);
     Route::apiResource('deliveries', DeliveryController::class);
+    Route::get('/deliveries/order/{orderId}', [DeliveryController::class, 'getByOrderId']);
     Route::get('/orders/status', [OrderController::class, 'getByStatus']);
     Route::apiResource('orders', OrderController::class);
     Route::get('users/{userId}/orders', [OrderController::class, 'getByUser']);

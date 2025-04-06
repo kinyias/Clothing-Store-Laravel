@@ -194,4 +194,32 @@ class DeliveryController extends Controller
             ], 500);
         }
     }
+    public function getByOrderId($orderId)
+    {
+        try {
+            // Fetch deliveries by order_id with relationships
+            $deliveries = Delivery::where('order_id', $orderId)
+                ->with(['user', 'order'])
+                ->get();
+
+            if ($deliveries->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No deliveries found for order ID ' . $orderId
+                ], 404);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Deliveries retrieved successfully for order ID ' . $orderId,
+                'data' => $deliveries
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to retrieve deliveries',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
