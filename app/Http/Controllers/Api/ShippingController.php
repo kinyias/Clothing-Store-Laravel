@@ -40,62 +40,16 @@ class ShippingController extends Controller
         }
     }
 
-    // public function getOtherOrders()
-    // {
-    //     try {
-    //         $orders = Order::with('orderItems.product', 'shipping')
-    //             ->where('status', '!=', 'ordered')
-    //             ->get();
-
-    //         // Ẩn thông tin không cần thiết
-    //         $orders = $orders->map(function ($order) {
-    //             $order->makeHidden(['subtotal', 'discount', 'tax', 'total', 'user_id', 'phone', 'name']);
-    //             return $order;
-    //         });
-
-    //         return response()->json([
-    //             'success' => true,
-    //             'message' => 'Other orders retrieved successfully',
-    //             'data' => $orders
-    //         ], 200);
-    //     } catch (\Exception $e) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Failed to retrieve orders',
-    //             'error' => $e->getMessage()
-    //         ], 500);
-    //     }
-    // }
-
     public function getOtherOrders()
     {
         try {
-            $user = Auth::user(); // Lấy user hiện tại
-            $shippings = Shipping::with(['order.orderItems.product']) // Tải quan hệ order và orderItems
-                ->whereHas('order', function ($query) use ($user) {
-                    $query->where('user_id', $user->id); // Lọc theo user_id từ bảng Order
-                })
+            $user = Auth::user();
+            $orders = Order::with('orderItems.product', 'shipping')
+                ->where('status', '!=', 'ordered')
+                ->where('user_id', $user->id)
                 ->get();
 
-            // Map dữ liệu để giữ cấu trúc tương tự như trước
-            $orders = $shippings->map(function ($shipping) {
-                $order = $shipping->order;
-                return (object) [
-                    'id' => $order->id,
-                    'status' => $order->status,
-                    'address' => $order->address,
-                    'city' => $order->city,
-                    'orderItems' => $order->orderItems,
-                    'shipping' => (object) [
-                        'note' => $shipping->note,
-                        'beforePackingImage' => $shipping->before_packing_image,
-                        'afterPackingImage' => $shipping->after_packing_image,
-                        'packingTime' => $shipping->packing_time,
-                    ],
-                ];
-            });
-
-            // Ẩn thông tin không cần thiết từ orderItems nếu cần
+            // Ẩn thông tin không cần thiết
             $orders = $orders->map(function ($order) {
                 $order->makeHidden(['subtotal', 'discount', 'tax', 'total', 'user_id', 'phone', 'name']);
                 return $order;
