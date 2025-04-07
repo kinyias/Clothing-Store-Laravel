@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\API\AddressController;
+use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\BrandProductController;
 use App\Http\Controllers\Api\BrandsController;
 use App\Http\Controllers\Api\CategoryController;
