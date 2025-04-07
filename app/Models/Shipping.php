@@ -11,9 +11,9 @@ class Shipping extends Model
     protected $fillable = [
         'order_id', 'note', 'before_packing_image', 'after_packing_image', 'packing_time'
     ];
-    
+
     public function order()
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(Order::class, 'order_id');
     }
 }
