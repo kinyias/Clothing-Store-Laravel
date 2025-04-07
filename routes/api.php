@@ -64,6 +64,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/shipping/other-orders', [ShippingController::class, 'getOtherOrders']);
         Route::get('/shipping/orders/{orderId}', [ShippingController::class, 'show']);
         Route::post('/shipping/orders/{orderId}/confirm', [ShippingController::class, 'confirmPacking']);
+        Route::post('/shipping/orders/{orderId}/cancel', [ShippingController::class, 'cancelOrder']);
     });
 });
 

@@ -8,6 +8,8 @@ use App\Models\Order;
 use App\Models\Shipping;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class ShippingController extends Controller
 {
@@ -109,29 +111,44 @@ class ShippingController extends Controller
             ], 422);
         }
 
+        $order = Order::find($orderId);
+        if (!$order || $order->status !== 'ordered') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Order not found or not in ordered status'
+            ], 404);
+        }
+
+        if (!$request->hasFile('before_packing_image') || !$request->hasFile('after_packing_image')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Missing required images'
+            ], 400);
+        }
+
         try {
-            $order = Order::find($orderId);
-            if (!$order || $order->status !== 'ordered') {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Order not found or not in ordered status'
-                ], 404);
-            }
+            // Tạo public_id duy nhất
+            $beforeUniqueId = Str::uuid()->toString();
+            $afterUniqueId = Str::uuid()->toString();
 
             // Upload ảnh lên Cloudinary
-            $beforeImage = $request->file('before_packing_image')->storeOnCloudinary('clothingstore/shipping/before');
-            $afterImage = $request->file('after_packing_image')->storeOnCloudinary('clothingstore/shipping/after');
+            $beforeUrl = $request->file('before_packing_image')
+                ->storeOnCloudinaryAs('clothingstore/shipping/before', "before_packing_{$orderId}_{$beforeUniqueId}")
+                ->getSecurePath();
+
+            $afterUrl = $request->file('after_packing_image')
+                ->storeOnCloudinaryAs('clothingstore/shipping/after', "after_packing_{$orderId}_{$afterUniqueId}")
+                ->getSecurePath();
 
             // Lưu thông tin đóng gói
             $shipping = Shipping::create([
                 'order_id' => $orderId,
                 'note' => $request->note,
-                'before_packing_image' => $beforeImage->getSecurePath(),
-                'after_packing_image' => $afterImage->getSecurePath(),
+                'before_packing_image' => $beforeUrl,
+                'after_packing_image' => $afterUrl,
                 'packing_time' => Carbon::now(),
             ]);
 
-            // Cập nhật trạng thái đơn hàng
             $order->status = 'waiting';
             $order->save();
 
@@ -144,6 +161,33 @@ class ShippingController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to confirm packing',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function cancelOrder(Request $request, $orderId)
+    {
+        try {
+            $order = Order::find($orderId);
+            if (!$order || $order->status !== 'ordered') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Order not found or not in ordered status'
+                ], 404);
+            }
+
+            $order->status = 'canceled';
+            $order->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Order canceled successfully'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to cancel order',
                 'error' => $e->getMessage()
             ], 500);
         }
