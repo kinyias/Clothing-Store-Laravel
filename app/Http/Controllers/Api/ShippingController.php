@@ -40,13 +40,39 @@ class ShippingController extends Controller
         }
     }
 
+    // public function getOtherOrders()
+    // {
+    //     try {
+    //         $user = Auth::user();
+    //         $orders = Order::with('orderItems.product', 'shipping')
+    //             ->where('status', '!=', 'ordered')
+    //             ->where('user_id', $user->id)
+    //             ->get();
+
+    //         // Ẩn thông tin không cần thiết
+    //         $orders = $orders->map(function ($order) {
+    //             $order->makeHidden(['subtotal', 'discount', 'tax', 'total', 'user_id', 'phone', 'name']);
+    //             return $order;
+    //         });
+
+    //         return response()->json([
+    //             'success' => true,
+    //             'message' => 'Other orders retrieved successfully',
+    //             'data' => $orders
+    //         ], 200);
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Failed to retrieve orders',
+    //             'error' => $e->getMessage()
+    //         ], 500);
+    //     }
+    // }
     public function getOtherOrders()
     {
         try {
-            $user = Auth::user();
             $orders = Order::with('orderItems.product', 'shipping')
                 ->where('status', '!=', 'ordered')
-                ->where('user_id', $user->id)
                 ->get();
 
             // Ẩn thông tin không cần thiết
