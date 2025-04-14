@@ -199,12 +199,6 @@ class ShippingController extends Controller
     {
         try {
             $order = Order::find($orderId);
-            if (!$order || $order->status !== 'ordered') {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Order not found or not in ordered status'
-                ], 404);
-            }
 
             $order->status = 'canceled';
             $order->save();
