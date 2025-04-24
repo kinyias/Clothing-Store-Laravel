@@ -13,6 +13,7 @@ use App\Models\Product;
 use App\Models\Review;
 use App\Models\Size;
 use App\Models\Transaction;
+use App\Models\User;
 use App\Models\Variant;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
@@ -757,5 +758,11 @@ class AdminController extends Controller
         $review = Review::findOrFail($id);
         $review->delete();
         return redirect()->route('admin.reviews')->with('status', 'Đánh giá đã được xóa thành công!');
+    }
+
+    public function user()
+    {
+        $user = User::orderBy('id', 'DESC')->paginate(10);
+        return view('admin.user', compact('user'));
     }
 }

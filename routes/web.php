@@ -94,4 +94,6 @@ Route::middleware(['auth'], AuthAdmin::class)->group(function(){
 
     Route::get('reviews', [AdminController::class, 'reviews'])->name('admin.reviews');
     Route::delete('reviews/{id}', [AdminController::class, 'reviewDelete'])->name('admin.review_delete');
+
+    Route::get('/admin/user',[AdminController::class,'user'])->name('admin.user');
 });
