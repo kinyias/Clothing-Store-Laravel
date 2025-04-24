@@ -20,7 +20,7 @@ use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\ShippingController;
 use App\Http\Controllers\Api\DeliveryController;
-
+use App\Http\Controllers\Api\AgencyController;
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'getUserInfo']);
@@ -45,12 +45,12 @@ Route::prefix('v1')->group(function () {
     Route::put('orders/{id}/status', [OrderController::class, 'updateStatus']);
     Route::apiResource('order-items', OrderItemController::class);
     Route::get('orders/{orderId}/order-items', [OrderItemController::class, 'getByOrder']);
+    Route::get('agency/{userId}', [AgencyController::class, 'getAgencyByUserId']);
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/favorites', [FavoriteController::class, 'index']);
         Route::post('/favorites', [FavoriteController::class, 'store']);
         Route::delete('/favorites/{productId}', [FavoriteController::class, 'destroy']);
         Route::apiResource('addresses', AddressController::class);
-
         Route::post('addresses/{address}/set-default', [AddressController::class, 'setDefault'])
             ->name('addresses.set-default');
         Route::apiResource('transactions', TransactionController::class);

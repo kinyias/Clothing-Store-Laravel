@@ -1,10 +1,11 @@
 
 <?php
+
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Agency;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 
 class AgencyController extends Controller
 {
@@ -20,7 +21,7 @@ class AgencyController extends Controller
 
         return response()->json($agencies);
     }
-
+   
     public function approve(Request $request, $id)
     {
         $agency = Agency::findOrFail($id);
