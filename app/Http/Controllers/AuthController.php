@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Agency;
+use Illuminate\Support\Facades\DB;
 class AuthController extends Controller
 {
     public function login(Request $request)
@@ -30,17 +32,44 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users',
             'mobile' => 'required',
             'password' => 'required|confirmed',
+            'is_agency' => 'sometimes|boolean',
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'mobile'=>$request->mobile,
-        ]);
+        // $user = User::create([
+        //     'name' => $request->name,
+        //     'email' => $request->email,
+        //     'password' => bcrypt($request->password),
+        //     'mobile'=>$request->mobile,
+        // ]);
 
-        $token = $user->createToken('authToken')->plainTextToken;
-        return response()->json(['token' => $token], 201);
+        // $token = $user->createToken('authToken')->plainTextToken;
+        // return response()->json(['token' => $token], 201);
+        DB::beginTransaction();
+        try {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'mobile' => $request->mobile,
+                'utype' => $request->is_agency ? 'AGENCY' : 'USR',
+                'agency_status' => $request->is_agency ? 'pending' : null,
+            ]);
+
+            if ($request->is_agency) {
+                Agency::create([
+                    'user_id' => $user->id,
+                    'level' => 5, // Default level 5
+                ]);
+            }
+
+            DB::commit();
+
+            $token = $user->createToken('authToken')->plainTextToken;
+            return response()->json(['token' => $token], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Registration failed'], 500);
+        }
     }
 
     public function logout(Request $request)
@@ -55,7 +84,7 @@ class AuthController extends Controller
         try {
             // Get the authenticated user
             $user = $request->user();
-            
+
             if (!$user) {
                 return response()->json([
                     'message' => 'User not authenticated'

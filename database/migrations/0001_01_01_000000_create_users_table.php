@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('mobile')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('utype')->default('USR')->comment('ADM for admin and USR for user');
+            $table->string('utype')->default('USR')->comment('ADM for admin, USR for user, AGENCY for agency');
+            $table->string('agency_status')->nullable()->comment('pending, approved, rejected')->default('pending');
             $table->rememberToken();
             $table->timestamps();
         });

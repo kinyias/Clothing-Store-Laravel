@@ -65,4 +65,31 @@ class User extends Authenticatable
     {
         return $this->hasMany(Address::class);
     }
+
+    public function agency(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Agency::class);
+    }
+
+    public function commissions()
+    {
+        return $this->hasManyThrough(
+            AgencyCommission::class,
+            Agency::class,
+            'user_id',
+            'agency_id',
+            'id',
+            'id'
+        );
+    }
+
+    public function isAgency(): bool
+    {
+        return $this->utype === 'AGENCY';
+    }
+
+    public function isApprovedAgency(): bool
+    {
+        return $this->isAgency() && $this->agency_status === 'approved';
+    }
 }
