@@ -37,6 +37,9 @@
             <div class="wg-table table-all-user">
 
                 <div class="table-responsive">
+                    @if(Session::has('status'))
+                    <p class="alert alert-success">{{Session::get('status')}}</p>
+                @endif
                     <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
@@ -71,12 +74,18 @@
                                                 <i class="icon-edit-3"></i>
                                             </div>
                                         </a>
-                                        @if ($u->utype == 'USR')
-                                        <a href="#">
-                                            <div class="item edit">
-                                                Duyệt tài khoản
+                                        @if ($u->utype == 'AGENCY' && $u->agency_status == 'pending')
+                                       
+                                        <form action="{{route('admin.agency.store')}}" method="POST">
+                                            @csrf
+                                            @method('POST')
+                                            <div class="item edit delete">
+                                                <input type="hidden" name="id" value="{{$u->id}}">
+                                                    <div class="item edit">
+                                                        Duyệt tài khoản
+                                                    </div>
                                             </div>
-                                        </a>
+                                        </form>
                                         @endif
                                     </div>
                                 </td>
@@ -95,3 +104,25 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    $(function(){
+        $('.delete').on('click', function(e){
+            e.preventDefault();
+            var form = $(this).closest('form');
+            swal({
+                title: "Bạn có muốn duyệt tài khoản agency?",
+                text: "Chắc chắn duyệt tài khoản này?",
+                type:"warning",
+                buttons:["Không","Có"],
+                confirmButtonColor:'#dc3545',
+            }).then(function(result){
+                if(result){
+                    form.submit();
+                }
+            })
+        })
+    })
+</script>
+@endpush

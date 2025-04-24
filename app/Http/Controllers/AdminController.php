@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Agency;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Color;
@@ -764,5 +765,19 @@ class AdminController extends Controller
     {
         $user = User::orderBy('id', 'DESC')->paginate(10);
         return view('admin.user', compact('user'));
+    }
+
+    public function agency_store(Request $request)
+    {
+        $request->validate([
+            'id' => 'required',
+        ]);
+        $user = User::find($request->id);
+        $user->agency_status = 'approved';
+        $agency = new Agency();
+        $agency->user_id  = $request->id;
+        $agency->save();
+        $user->save();
+        return redirect()->route('admin.user')->with('status', 'Đã duyệt thành công thành công!');
     }
 }
